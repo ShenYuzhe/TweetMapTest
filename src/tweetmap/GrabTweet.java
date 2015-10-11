@@ -28,7 +28,7 @@ public class GrabTweet {
           .setOAuthConsumerKey("")
           .setOAuthConsumerSecret("")
           .setOAuthAccessToken("")
-          .setOAuthAccessTokenSecret("uu");
+          .setOAuthAccessTokenSecret("II");
         
        TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
        StatusListener listener = new StatusListener() {

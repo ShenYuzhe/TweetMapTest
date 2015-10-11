@@ -1,3 +1,4 @@
+package tweetmap;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;

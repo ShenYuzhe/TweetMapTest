@@ -1,3 +1,4 @@
+package tweetmap;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -23,7 +24,7 @@ public class DynamoManager {
 		RangeKeyCondition rangeKeyCondition =
 				new RangeKeyCondition("time")
 					.gt(bf)
-					.lt(af); //2015-10-11 10:18:14 2015-10-10 00:00:00
+					.lt(af);
 	    QueryFilter filter = new QueryFilter("");
 	    filter.eq("a");
 	    QuerySpec spec = new QuerySpec()

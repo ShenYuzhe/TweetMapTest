@@ -1,3 +1,4 @@
+package tweetmap;
 import java.io.IOException;
 
 import javax.websocket.OnClose;
@@ -6,11 +7,14 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
 import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 
@@ -20,7 +24,8 @@ public class TwitterEmitter {
 	DynamoManager dynamoMngr = new DynamoManager();
 	
 	/**
-     * @OnOpen allows us to intercept the creation of a new session.
+     * @throws JSONException 
+	 * @OnOpen allows us to intercept the creation of a new session.
      * The session class allows us to send data to the user.
      * In the method onOpen, we'll let the user know that the handshake was 
      * successful.
@@ -28,12 +33,22 @@ public class TwitterEmitter {
 
 	
     @OnOpen
-    public void onOpen(Session session){
+    public void onOpen(Session session) throws JSONException {
         System.out.println(session.getId() + " has opened a connection"); 
         try {
-            session.getBasicRemote().sendText("Connection Established");
+        	Iterator<Item> iterator 
+        		= this.dynamoMngr.getPoints("2015-10-10 00:00:00", "2015-10-11 10:18:14").iterator();
+        	while (iterator.hasNext()) {
+        		Item item = iterator.next();
+        		JSONObject jo = new JSONObject();
+        		jo.put("lon", item.getJSON("lon"));
+        		jo.put("lat", item.getJSON("lat"));
+        		session.getBasicRemote().sendText(jo.toString());
+        	}
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (JSONException jx) {
+        	jx.printStackTrace();
         }
     }
  

@@ -1,3 +1,4 @@
+package tweetmap;
 
 public class Keywords {
 	static String[] keywords = {
